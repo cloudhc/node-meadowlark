@@ -48,6 +48,7 @@ function getWeatherData(){
 
 app
 	.use(express.static(__dirname + '/public'))
+	.use(require('body-parser').urlencoded({extended: true}))
 	.set('port', process.env.PORT || 3000)
 	.engine('handlebars', handlebars.engine)
 	.set('view engine', 'handlebars');
@@ -123,6 +124,20 @@ app
 			adjective: 'bushy',
 			noun: 'heck',
 		});
+	})
+	.get('/newsletter', function(req, res) {
+    		// we will learn about CSRF later...for now, we just
+    		// provide a dummy value
+    		res.render('newsletter', { csrf: 'CSRF token goes here' });
+	})
+	.post('/process', function(req, res){
+    		if(req.xhr || req.accepts('json,html')==='json'){
+        		// if there were an error, we would send { error: 'error description' }
+        		res.send({ success: true });
+    		} else {
+        		// if there were an error, we would redirect to an error page
+        		res.redirect(303, '/thank-you');
+    		}
 	})
 	.put('/api/tours/:id', function(req, res) {
 		var p = tours.filter(function(p) { return p.id == req.param.id })[0];
