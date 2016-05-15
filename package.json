@@ -12,7 +12,11 @@
     "express": "^4.13.4",
     "express-handlebars": "^3.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "zombie": "^4.2.1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cloudhc/node-meadowlark.git"
