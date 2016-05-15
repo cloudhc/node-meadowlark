@@ -1,0 +1,27 @@
+{
+  "name": "meadowlark",
+  "version": "0.0.1",
+  "description": "meadowlark app by node & express",
+  "main": "meadowlark.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "bob lee",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "express-handlebars": "^3.0.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cloudhc/node-meadowlark.git"
+  },
+  "keywords": [
+    "meadowlark"
+  ],
+  "bugs": {
+    "url": "https://github.com/cloudhc/node-meadowlark/issues"
+  },
+  "homepage": "https://github.com/cloudhc/node-meadowlark#readme"
+}
