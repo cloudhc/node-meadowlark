@@ -84,8 +84,8 @@ app
 	.get('/tours/oregon-coast', function(req, res){
 		res.render('tours/oregon-coast');
 	})
-	.get('/tours/request-group-size', function(req, res) {
-		res.render('tours/request-group-size');
+	.get('/tours/request-group-rate', function(req, res) {
+		res.render('tours/request-group-rate');
 	})
 	.get('/api/tours', function(req, res) {
 		var toursXml = '' + 
@@ -113,6 +113,17 @@ app
 			}
 		});
 	})
+	.get('/nursery-rhyme', function(req, res){
+		res.render('nursery-rhyme');
+	})
+	.get('/data/nursery-rhyme', function(req, res){
+		res.json({
+			animal: 'squirrel',
+			bodyPart: 'tail',
+			adjective: 'bushy',
+			noun: 'heck',
+		});
+	})
 	.put('/api/tours/:id', function(req, res) {
 		var p = tours.filter(function(p) { return p.id == req.param.id })[0];
 		if (p) {
@@ -134,9 +145,9 @@ app
 			res.json({error: 'No such tour exists.'});
 		}
 	});
-
+	
 app
-	.use(function(req, res) {
+	.use(function(req, res, next) {
 		res.status(404);
 		res.render('404');
 	})
