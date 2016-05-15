@@ -1,8 +1,16 @@
 var express = require('express'),
+	fortune = require('./lib/fortune.js'),
 	app = express(),
-	handlebars = require('express-handlebars')
-		.create({defaultLayout: 'main'}),
-	fortune = require('./lib/fortune.js');
+	handlebars = require('express-handlebars').create({
+		defaultLayout: 'main',
+		helpers: {
+			section: function(name, options) {
+				if(!this._sections) this._sections = {};
+				this._sections[name] = options.fn(this);
+				return null;
+			}
+		}
+	});
 
 var tours = [
 	{id: 0, name: 'Hood River', price: 99.99},
@@ -66,6 +74,9 @@ app
 			fortune: fortune.getFortune(),
 			pageTestScript: '/qa/tests-about.js'
 		});
+	})
+	.get('/jquery-test', function(req, res) {
+		res.render('jquery-test');
 	})
 	.get('/tours/hood-river', function(req, res) {
 		res.render('tours/hood-river');
