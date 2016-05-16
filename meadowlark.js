@@ -13,6 +13,24 @@ var express = require('express'),
 		}
 	});
 
+app
+	.set('port', process.env.PORT || 3000)
+	.engine('handlebars', handlebars.engine)
+	.set('view engine', 'handlebars')
+	.use(require('cookie-parser')(credentials.cookieSecret))
+	.use(require('express-session')({
+		resave: false,
+		saveUninitialized: false,
+		secret: credentials.cookieSecret,
+	}))
+	.use(express.static(__dirname + '/public'))
+	.use(require('body-parser').urlencoded({extended: true}))
+	.use(function(req, res, next){
+		res.locals.flash = req.session.flash;
+		delete req.session.flash;
+		next();
+	});
+
 var tours = [
 	{id: 0, name: 'Hood River', price: 99.99},
 	{id: 1, name: 'Oregon Coast', price: 149.95},
@@ -56,23 +74,6 @@ NewsletterSignup.prototype.save = function(cb){
 
 var VALID_EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
 
-app
-	.use(require('cookie-parser')(credentials.cookieSecret))
-	.use(require('express-session')({
-		resave: false,
-		saveUninitialized: false,
-		secret: credentials.cookieSecret,
-	}))
-	.use(express.static(__dirname + '/public'))
-	.use(require('body-parser').urlencoded({extended: true}))
-	.use(function(req, res, next){
-		res.locals.flash = req.session.flash;
-		delete req.session.flash;
-		next();
-	})
-	.set('port', process.env.PORT || 3000)
-	.engine('handlebars', handlebars.engine)
-	.set('view engine', 'handlebars');
 
 // custom test route
 app
