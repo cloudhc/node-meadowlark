@@ -1,6 +1,7 @@
 var express = require('express'),
 	fortune = require('./lib/fortune.js'),
 	app = express(),
+	connect = require('connect'),
 	credentials = require('./credentials.js'),
 	handlebars = require('express-handlebars').create({
 		defaultLayout: 'main',
@@ -13,6 +14,16 @@ var express = require('express'),
 		}
 	});
 
+switch(app.get('env')) {
+	case 'development':
+		app.use(require('morgan')('dev'));
+		break;
+	case 'production':
+		app.use(require('express-logger')({
+			apth: __dirname + '/log/requests.log'
+		}));
+		break;
+}
 app
 	.set('port', process.env.PORT || 3000)
 	.engine('handlebars', handlebars.engine)
