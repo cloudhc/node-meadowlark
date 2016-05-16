@@ -1,6 +1,7 @@
 var express = require('express'),
 	fortune = require('./lib/fortune.js'),
 	app = express(),
+	credentials = require('./credentials.js'),
 	handlebars = require('express-handlebars').create({
 		defaultLayout: 'main',
 		helpers: {
@@ -22,31 +23,37 @@ function getWeatherData(){
     return {
         locations: [
 	    	{
-				name: 'Portland',
-				forecastUrl: 'http://www.wunderground.com/US/OR/Portland.html',
-				iconUrl: 'http://icons-ak.wxug.com/i/c/k/cloudy.gif',
-				weather: 'Overcast',
-				temp: '54.1 F (12.3 C)',
-		    },
-		    {
+			name: 'Portland',
+			forecastUrl: 'http://www.wunderground.com/US/OR/Portland.html',
+			iconUrl: 'http://icons-ak.wxug.com/i/c/k/cloudy.gif',
+			weather: 'Overcast',
+			temp: '54.1 F (12.3 C)',
+		},
+		{
 		        name: 'Bend',
 		        forecastUrl: 'http://www.wunderground.com/US/OR/Bend.html',
 		        iconUrl: 'http://icons-ak.wxug.com/i/c/k/partlycloudy.gif',
 		        weather: 'Partly Cloudy',
 		        temp: '55.0 F (12.8 C)',
-		    },
-		    {
+		},
+		{
 		        name: 'Manzanita',
 		        forecastUrl: 'http://www.wunderground.com/US/OR/Manzanita.html',
 		        iconUrl: 'http://icons-ak.wxug.com/i/c/k/rain.gif',
 		        weather: 'Light Rain',
 		        temp: '55.0 F (12.8 C)',
-		    },
+		},
         ],
     };
 }
 
 app
+	.use(require('cookie-parser')(credentials.cookieSecret))
+	.use(require('express-session')({
+		resave: false,
+		saveUninitialized: false,
+		secret: credentials.cookieSecret,
+	}))
 	.use(express.static(__dirname + '/public'))
 	.use(require('body-parser').urlencoded({extended: true}))
 	.set('port', process.env.PORT || 3000)
@@ -76,9 +83,6 @@ app
 			pageTestScript: '/qa/tests-about.js'
 		});
 	})
-	.get('/jquery-test', function(req, res) {
-		res.render('jquery-test');
-	})
 	.get('/tours/hood-river', function(req, res) {
 		res.render('tours/hood-river');
 	})
@@ -87,6 +91,9 @@ app
 	})
 	.get('/tours/request-group-rate', function(req, res) {
 		res.render('tours/request-group-rate');
+	})
+	.get('/jquery-test', function(req, res) {
+		res.render('jquery-test');
 	})
 	.get('/api/tours', function(req, res) {
 		var toursXml = '' + 
