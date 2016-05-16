@@ -125,6 +125,9 @@ app
 			noun: 'heck',
 		});
 	})
+	.get('/thank-you', function(req, res){
+		res.render('thank-you');
+	})
 	.get('/newsletter', function(req, res) {
     		// we will learn about CSRF later...for now, we just
     		// provide a dummy value
